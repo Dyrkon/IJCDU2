@@ -8,15 +8,16 @@ CFLAGS  = -g -std=c11 -Wextra -Wall -pedantic -O2
 LDFLAGS = -g
 LDLIBS  = -lm # pokud potřebujeme matematickou knihovnu libm
 CC = gcc
-TIME = time
-ULIMIT	= ulimit -s 65500
 
 all: tail wordcount
 
 tail.o: tail.c
-	$(CC) $(CFLAGS1) -c tail.c
+	$(CC) $(CFLAGS) -c tail.c
 
-wordcount.o: wordcount.c
+# wordcount.o: wordcount.c
+
+tail: tail.o
+	$(CC) $(LDFLAGS) -o tail tail.o $(LDLIBS)
 
 clean:
 	rm -f  *~  *.bak  *.o  primes primes-i
