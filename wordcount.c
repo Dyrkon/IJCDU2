@@ -8,6 +8,6 @@
 
 int main(int argc, char *argv[])
 {
-    printf("Ahoj\n");
+    printf("cau\n");
     return 0;
 }
