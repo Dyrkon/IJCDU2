@@ -10,10 +10,12 @@
 #include <stdbool.h>
 
 #define MAX_LINES 511
+#define MINIMAL_N_OF_LINES 5
 
 typedef struct input {
     char **lines;
-    long number_of_lines;
+    size_t line_number;
+    size_t lines_allocated;
 }input_t;
 
 void usage()
@@ -25,21 +27,58 @@ void usage()
            " tail -n (+/-)NUMBER-OF-LINES-TO-PRINT < YOUR-FILE\n");
 }
 
+int alloc_lines(bool do_realloc, input_t *input, size_t n)
+{
+    if (do_realloc)
+    {
+        if ((input->lines = realloc(input->lines, n + input->lines_allocated * sizeof(char *))) == NULL)
+        {
+            fprintf(stderr, "Unable to reallocate enough memory!\n");
+            return 1;
+        }
+        else
+            input->lines_allocated += n;
+    }
+    else
+    {
+        if ((input->lines = malloc(n * sizeof(char *))) == NULL)
+        {
+            fprintf(stderr, "Unable to allocate enough memory!\n");
+            return 1;
+        }
+        else
+            input->lines_allocated = MINIMAL_N_OF_LINES;
+    }
+    return 0;
+}
+
 int read_from_file(input_t *input, FILE *fp)
 {
     int end_char = 0;
-    while (end_char != EOF)
+
+    if (alloc_lines(false, input, MINIMAL_N_OF_LINES))
     {
-        if ((input->lines[input->number_of_lines] = calloc(MAX_LINES+1, sizeof(char))) == NULL)
+        return 1;
+    }
+
+    while(end_char != EOF)
+    {
+        if (input->line_number == input->lines_allocated)
         {
-            fprintf(stderr, "Unable to allocate enough memory!\n");
-            fclose(fp);
-            input->number_of_lines *= -1;
-            return -1;
+            if (alloc_lines(true, input, MINIMAL_N_OF_LINES))
+            {
+                return 1;
+            }
         }
 
-        fscanf(fp,"%511s", input->lines[input->number_of_lines]);
-        input->number_of_lines++;
+
+        if ((input->lines[input->line_number] = malloc(MAX_LINES+1 * sizeof(char))) == NULL) {
+            fprintf(stderr, "Unable to allocate enough memory!\n");
+            return 1;
+        }
+
+        fscanf(fp,"%511s", input->lines[input->line_number]);
+        input->line_number++;
         end_char = fgetc(fp);
         if (end_char != '\n')
         {
@@ -54,15 +93,15 @@ int read_from_stdin(input_t *input)
     int end_char = 0;
     while (end_char != EOF)
     {
-        if ((input->lines[input->number_of_lines] = calloc(MAX_LINES+1, sizeof(char))) == NULL)
+        if ((input->lines[input->line_number] = calloc(MAX_LINES + 1, sizeof(char))) == NULL)
         {
             fprintf(stderr, "Unable to allocate enough memory!\n");
-            input->number_of_lines *= -1;
+            input->line_number *= -1;
             return -1;
         }
 
-        scanf("%s",input->lines[input->number_of_lines]);
-        input->number_of_lines++;
+        scanf("%s",input->lines[input->line_number]);
+        input->line_number++;
         end_char = getc(stdin);
         if (end_char != '\n')
         {
@@ -75,7 +114,8 @@ int read_from_stdin(input_t *input)
 input_t get_input(char *filename, bool is_file)
 {
     input_t  input;
-    input.number_of_lines = 0;
+    input.line_number = 0;
+    input.lines_allocated = 0;
 
     if (is_file)
     {
@@ -92,7 +132,7 @@ input_t get_input(char *filename, bool is_file)
         {
             fprintf(stderr, "Unable to allocate enough memory!\n");
             fclose(fp);
-            input.number_of_lines *= -1;
+            input.line_number *= -1;
             return input;
         }
 
@@ -104,10 +144,11 @@ input_t get_input(char *filename, bool is_file)
         if (read_from_stdin(&input))
         {
             fprintf(stderr, "Unable to allocate enough memory!\n");
-            input.number_of_lines *= -1;
+            input.line_number *= -1;
             return input;
         }
     }
+    return input;
 }
 
 int main(int argc, char *argv[])
@@ -129,9 +170,9 @@ int main(int argc, char *argv[])
             char *end;
             long lines_to_print = strtol(argv[2],&end, 10);
             input = get_input("",false);
-            if (input.number_of_lines < 0)
+            if (input.lines_allocated < 0)
             {
-                for (int i = 0; i < input.number_of_lines*(-1); i++)
+                for (size_t i = 0; i < input.lines_allocated*(-1); i++)
                 {
                     free(input.lines[i]);
                 }
@@ -149,10 +190,10 @@ int main(int argc, char *argv[])
         {
             char *end;
             long lines_to_print = strtol(argv[2],&end, 10);
-            input = get_input(argv[3],false);
-            if (input.number_of_lines < 0)
+            input = get_input(argv[3],true);
+            if (input.line_number < 0)
             {
-                for (int i = 0; i < input.number_of_lines*(-1); i++)
+                for (int i = 0; i < input.line_number * (-1); i++)
                 {
                     free(input.lines[i]);
                 }
