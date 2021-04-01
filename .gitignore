@@ -33,3 +33,5 @@
 
 .idea
 *.txt
+
+./.gradle

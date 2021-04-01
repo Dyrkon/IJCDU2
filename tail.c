@@ -202,7 +202,7 @@ int main(int argc, char *argv[])
             input = get_input(argv[3],true);
 
             // input.line_number - lines_to_print
-            for (size_t i = input.line_number - lines_to_print-1; i < input.line_number; i++)
+            for (size_t i = input.line_number - lines_to_print; i < input.line_number; i++)
             {
                 printf("%s\n", input.lines[i]);
             }
