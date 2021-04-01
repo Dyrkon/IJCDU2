@@ -31,13 +31,17 @@ int alloc_lines(bool do_realloc, input_t *input, size_t n)
 {
     if (do_realloc)
     {
-        if ((input->lines = realloc(input->lines, n + input->lines_allocated * sizeof(char *))) == NULL)
+        char **temp = NULL;
+        if ((temp = realloc(input->lines, (n + input->lines_allocated) * sizeof(char *))) == NULL)
         {
             fprintf(stderr, "Unable to reallocate enough memory!\n");
             return 1;
         }
         else
+        {
+            input->lines = temp;
             input->lines_allocated += n;
+        }
     }
     else
     {
@@ -54,40 +58,45 @@ int alloc_lines(bool do_realloc, input_t *input, size_t n)
 
 int read_from_file(input_t *input, FILE *fp)
 {
-    int end_char = 0;
+    bool end_found = false;
 
     if (alloc_lines(false, input, MINIMAL_N_OF_LINES))
-    {
         return 1;
-    }
 
-    while(end_char != EOF)
+    while (!end_found)
     {
-        if (input->line_number == input->lines_allocated)
+        if (input->lines_allocated == input->line_number)
         {
-            if (alloc_lines(true, input, MINIMAL_N_OF_LINES))
-            {
-                return 1;
+            if (input->line_number == input->lines_allocated) {
+                if (alloc_lines(true, input, MINIMAL_N_OF_LINES))
+                    return 1;
             }
         }
-
-
-        if ((input->lines[input->line_number] = malloc(MAX_LINES+1 * sizeof(char))) == NULL) {
-            fprintf(stderr, "Unable to allocate enough memory!\n");
-            return 1;
-        }
-
-        fscanf(fp,"%511s", input->lines[input->line_number]);
-        input->line_number++;
-        end_char = fgetc(fp);
-        if (end_char != '\n')
+        else
         {
-            fprintf(stderr, "Unable to read the full line.\n");
+            int end_char = 0;
+            if ((input->lines[input->line_number] = malloc(MAX_LINES+1 * sizeof(char))) == NULL) {
+                fprintf(stderr, "Unable to allocate enough memory!\n");
+                return 1;
+            }
+
+            fscanf(fp,"%511[^\n]s",input->lines[input->line_number]);
+            input->line_number++;
+            end_char = fgetc(fp);
+            if (end_char == EOF)
+                end_found = true;
+            else if (end_char != '\n')
+            {
+                fscanf(fp, "%*[^\n]");
+                end_char = fgetc(fp);
+                fprintf(stderr, "Unable to read the full line.\n");
+            }
         }
     }
     return 0;
 }
 
+// REDO
 int read_from_stdin(input_t *input)
 {
     int end_char = 0;
@@ -191,9 +200,23 @@ int main(int argc, char *argv[])
             char *end;
             long lines_to_print = strtol(argv[2],&end, 10);
             input = get_input(argv[3],true);
+
+            // input.line_number - lines_to_print
+            for (size_t i = input.line_number - lines_to_print-1; i < input.line_number; i++)
+            {
+                printf("%s\n", input.lines[i]);
+            }
+
             if (input.line_number < 0)
             {
-                for (int i = 0; i < input.line_number * (-1); i++)
+                for (size_t i = 0; i < input.lines_allocated * (-1); i++)
+                {
+                    free(input.lines[i]);
+                }
+            }
+            else
+            {
+                for (size_t i = 0; i < input.lines_allocated; i++)
                 {
                     free(input.lines[i]);
                 }
