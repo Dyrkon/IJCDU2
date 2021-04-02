@@ -91,7 +91,10 @@ void do_tail(char *filename, char *to_print, bool is_file)
     if (to_print[0] == '|')
         lines_to_print = 10;
     else
+    {
         lines_to_print = strtol(to_print,&end, 10);
+        ABS(lines_to_print);
+    }
 
     input = get_input(!is_file ? "" : filename,is_file);
 
