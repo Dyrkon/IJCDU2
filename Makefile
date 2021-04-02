@@ -20,7 +20,7 @@ tail: tail.o
 	$(CC) $(LDFLAGS) -o tail tail.o $(LDLIBS)
 
 clean:
-	rm -f  *~  *.bak  *.o  primes primes-i
+	rm -f  *~  *.bak  *.o  tail
 
 archiv:
 	tar czvf xmudra04.tar.gz *.c *.h *.so *.a Makefile

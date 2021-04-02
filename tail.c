@@ -8,70 +8,21 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "to_be_tested.h"
 
 #define MAX_LINES 511
 #define MINIMAL_N_OF_LINES 5
 #define ABS(x) ((x < 0) ? (x *= -1) : x)
 
-typedef struct input {
-    char **lines;
-    long line_number;
-    long lines_allocated;
-}input_t;
-
-void free_all(input_t *input);
-
-input_t get_input(char *filename, bool is_file);
-
-int read_from_stdin(input_t *input);
-
-int read_from_file(input_t *input, FILE *fp);
-
-int alloc_lines(bool do_realloc, input_t *input, size_t n);
-
-void do_tail(char *filename, char *to_print, bool is_file);
-
-void usage();
-
+/*
 int main(int argc, char *argv[])
 {
-    if (argc == 2)
-    {
-        if (argv[1])
-
-        do_tail(argv[1], "|", true);
-
-    }
-    else if (argc == 3)
-    {
-        if (strcmp(argv[1], "-n") != 0)
-        {
-            printf("Wrong parameters given!\n");
-            usage();
-        }
-        else
-            do_tail(NULL, argv[2], false);
-    }
-    else if (argc == 4)
-    {
-        if (strcmp(argv[1], "-n") != 0)
-        {
-            printf("Wrong parameters given!\n");
-            usage();
-        }
-        else
-            do_tail(argv[3], argv[2], true);
-    }
+    if (start_tail(argc, argv))
+        return -1;
     else
-    {
-        printf("Too few parameters supplied!\n");
-        usage();
         return 0;
-    }
-
-    return 0;
 }
-
+*/
 void usage()
 {
     printf(
@@ -81,7 +32,45 @@ void usage()
             " tail -n (+/-)NUMBER-OF-LINES-TO-PRINT < YOUR-FILE\n");
 }
 
-void do_tail(char *filename, char *to_print, bool is_file)
+int start_tail(int argc, char *argv[])
+{
+    if (argc == 2)
+    {
+        if (argv[1])
+            if (do_tail(argv[1], "|", true))
+                return 1;
+    }
+    else if (argc == 3)
+    {
+        if (strcmp(argv[1], "-n") != 0)
+        {
+            printf("Wrong parameters given!\n");
+            usage();
+        }
+        else
+            if(do_tail(NULL, argv[2], false))
+                return 1;
+    }
+    else if (argc == 4)
+    {
+        if (strcmp(argv[1], "-n") != 0)
+        {
+            printf("Wrong parameters given!\n");
+            usage();
+        }
+        else
+            if (do_tail(argv[3], argv[2], true))
+                return 1;
+    }
+    else
+    {
+        printf("Too few parameters supplied!\n");
+        usage();
+    }
+    return 1;
+}
+
+int do_tail(char *filename, char *to_print, bool is_file)
 {
     input_t input;
     char *end;
@@ -106,13 +95,14 @@ void do_tail(char *filename, char *to_print, bool is_file)
     else
     {
         free_all(&input);
-        return;
+        return 1;
     }
 
     for (long i = input.line_number - lines_to_print; i < input.line_number; i++)
         printf("%s\n", input.lines[i]);
 
     free_all(&input);
+    return 0;
 }
 
 int alloc_lines(bool do_realloc, input_t *input, size_t n)
