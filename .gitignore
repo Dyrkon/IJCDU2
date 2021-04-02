@@ -32,8 +32,9 @@
 *.app
 
 .idea
-*.txt
+#*.txt
 
 ./.gradle
 googletest/
 cmake-build-debug/
+tests/test.txt

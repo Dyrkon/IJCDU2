@@ -69,4 +69,5 @@ TEST_F(TailTest, IncorrectParamTest)
     EXPECT_EQ(start_tail(1, const_cast<char **>(argv_correct4)), 1);
     EXPECT_EQ(start_tail(5, const_cast<char **>(argv_correct4)), 1);
     EXPECT_EQ(start_tail(5, NULL), 1);
+    EXPECT_EQ(start_tail(-5, const_cast<char **>(argv_correct4)), 1);
 }

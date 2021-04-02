@@ -35,7 +35,7 @@ if [[ $TEST5 == *"All heap blocks were freed -- no leaks are possible"* ]]; then
   fi
 
 if [[ $OUT == 5 ]]; then
-  echo "0"
+  STD=$(cat <<< "$OUT")
   exit
   fi
 
