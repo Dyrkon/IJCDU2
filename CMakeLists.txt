@@ -14,12 +14,24 @@ enable_testing()
 add_subdirectory(googletest)
 
 set(Headers
-        to_be_tested.h
-        )
-set(Sources
+        to_be_testedC.h
+        to_be_tested_Cplus.h)
+set(Sources1
         tail.c
         )
 
-add_library(${This} STATIC ${Sources} ${Headers})
+set(Sources2
+        wordcountPlus.cc
+        )
+
+set(Sources3
+        wordcount.c
+        )
+
+add_library(${This}Tail STATIC ${Sources1} ${Headers})
+
+add_library(${This}wcPlus STATIC ${Sources2} ${Headers})
+
+add_library(${This}wcC STATIC ${Sources3} ${Headers})
 
 add_subdirectory(tests)

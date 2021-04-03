@@ -1,5 +1,7 @@
-#ifndef IJCDU2_TO_BE_TESTED_H
-#define IJCDU2_TO_BE_TESTED_H
+#ifndef IJCDU2_TO_BE_TESTEDC_H
+#define IJCDU2_TO_BE_TESTEDC_H
+
+#include "string.h"
 
 // Tail
 
@@ -25,4 +27,7 @@ int do_tail(char *filename, char *to_print, bool is_file);
 
 void usage();
 
-#endif //IJCDU2_TO_BE_TESTED_H
+// Word count model in C++
+
+
+#endif //IJCDU2_TO_BE_TESTEDC_H

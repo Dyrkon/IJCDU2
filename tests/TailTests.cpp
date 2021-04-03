@@ -1,9 +1,8 @@
 #include "gtest/gtest.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
 
 extern "C" {
-    #include "../to_be_tested.h"
+    #include "../to_be_testedC.h"
 }
 
 // For stdin testing system("stdinSim.sh");

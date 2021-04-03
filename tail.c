@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "to_be_tested.h"
+#include "to_be_testedC.h"
 
 #define MAX_LINES 511
 #define MINIMAL_N_OF_LINES 5
