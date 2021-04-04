@@ -3,8 +3,6 @@
 #include <fstream>
 #include <string>
 #include "../to_be_tested_Cplus.h"
-#include <cstdio>
-#include <cstdlib>
 
 // #define FILENAME "wordFile.txt"
 #define FILENAME "test.txt"
@@ -20,6 +18,7 @@ protected:
     }
     string correct_name;
     string incorrect_name;
+    vector<string> output;
 };
 
 class EmptyMap : public ::testing::Test {
@@ -34,5 +33,7 @@ protected:
 TEST_F(NonEmptyMap, Asing)
 {
     //EXPECT_EQ(1,1);
-    IJCDU2model(correct_name);
+    IJCDU2model(correct_name, output);
+    for (auto &str : output)
+        cout << str;
 }

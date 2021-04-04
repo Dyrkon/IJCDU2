@@ -26,7 +26,7 @@ set(Sources2
 
 set(Sources3
         wordcount.c
-        )
+        io.c)
 
 add_library(${This}Tail STATIC ${Sources1} ${Headers})
 

@@ -17,9 +17,9 @@ int main() {
     return 0;
 }*/
 
-int IJCDU2model(const string& filename)
+int IJCDU2model(const std::string& filename, vector<string> output)
 {
-    unordered_map<string,int> m;  // asociativní pole
+    unordered_map<string,int> m;    // asociativní pole
 
     ifstream input_file(filename);
     string word;
@@ -31,14 +31,19 @@ int IJCDU2model(const string& filename)
     }
 
     // mapuje klíč/string na hodnotu/int
-    for (const auto &i : words_v) // čtení slova (jako scanf "%s", ale bezpečné)
-        m[word]++;      // počítání výskytů slova (zvýší hodnotu pro
+    for (const auto &i : words_v)   // čtení slova (jako scanf "%s", ale bezpečné)
+        m[word]++;                  // počítání výskytů slova (zvýší hodnotu pro
     // zadaný klíč/slovo pokud záznam existuje,
     // jinak vytvoří nový záznam s hodnotou 0 a
     // tu operace ++ zvýší na 1)
 
+    int cnt = 0;
     for (auto &mi: m)   // pro všechny prvky kontejneru m
-        cout << mi.first << "\t" << mi.second << "\n";
+    {
+        output.push_back(mi.first);
+        cnt++;
+    }
+
     // klíč/slovo          hodnota/počet
     // prvky kontejneru typu "map" jsou dvojice (klíč,hodnota)
     return 0;
