@@ -8,13 +8,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "to_be_testedC.h"
+#include "tests/to_be_testedC.h"
 
 #define MAX_LINES 511
 #define MINIMAL_N_OF_LINES 5
 #define ABS(x) ((x < 0) ? (x *= -1) : x)
 
-/*
+
 int main(int argc, char *argv[])
 {
     if (start_tail(argc, argv))
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     else
         return 0;
 }
-*/
+
 void usage()
 {
     printf(
@@ -42,7 +42,7 @@ int start_tail(int argc, char *argv[])
     }
     else if (argc == 3)
     {
-        if (strcmp(argv[1], "-n") != 0)
+        if (strcmp(argv[1], "-n") != 0 || !isdigit(argv[2][0]))
         {
             printf("Wrong parameters given!\n");
             usage();
