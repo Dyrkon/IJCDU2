@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <ctype.h>
 #include "tests/to_be_testedC.h"
 
 #define MAX_LINES 511
@@ -75,7 +76,7 @@ int do_tail(char *filename, char *to_print, bool is_file)
     input_t input;
     char *end;
 
-    long lines_to_print = 0;
+    long lines_to_print;
 
     if (to_print[0] == '|')
         lines_to_print = 10;
@@ -152,7 +153,7 @@ int read_from_file(input_t *input, FILE *fp)
         }
         else
         {
-            int end_char = 0;
+            int end_char;
             if ((input->lines[input->line_number] = malloc(MAX_LINES+1 * sizeof(char))) == NULL) {
                 fprintf(stderr, "Unable to allocate enough memory!\n");
                 return 1;
@@ -192,7 +193,7 @@ int read_from_stdin(input_t *input)
         }
         else
         {
-            int end_char = 0;
+            int end_char;
             if ((input->lines[input->line_number] = malloc(MAX_LINES+1 * sizeof(char))) == NULL) {
                 fprintf(stderr, "Unable to allocate enough memory!\n");
                 return 1;

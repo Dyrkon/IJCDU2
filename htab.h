@@ -10,7 +10,7 @@
 
 // Tabulka:
 struct htab;    // neúplná deklarace struktury - uživatel nevidí obsah
-typedef struct htab htab_t;     // typedef podle zadání
+typedef struct htab htab_t;    // typedef podle zadání
 
 // Typy:
 typedef const char * htab_key_t;        // typ klíče
@@ -21,6 +21,12 @@ typedef struct htab_pair {
     htab_key_t    key;          // klíč
     htab_value_t  value;        // asociovaná hodnota
 } htab_pair_t;                  // typedef podle zadání
+
+typedef struct heshEntry
+{
+    struct htab_pair pair;
+    struct heshEntry *next;
+}heshEntry_t;
 
 // Rozptylovací (hash) funkce (stejná pro všechny tabulky v programu)
 // Pokud si v programu definujete stejnou funkci, použije se ta vaše.
