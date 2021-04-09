@@ -7,6 +7,7 @@
 
 #include <string.h>     // size_t
 #include <stdbool.h>    // bool
+#include <stdio.h>
 
 // Tabulka:
 struct htab;    // neúplná deklarace struktury - uživatel nevidí obsah
@@ -48,5 +49,9 @@ void htab_for_each(const htab_t * t, void (*f)(htab_pair_t *data));
 
 void htab_clear(htab_t * t);    // ruší všechny záznamy
 void htab_free(htab_t * t);     // destruktor tabulky
+
+int read_word(const char *s, int max, FILE *f);
+
+#define MAX_WORD 127
 
 #endif // __HTAB_H__

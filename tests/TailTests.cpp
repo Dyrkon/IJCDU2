@@ -2,7 +2,7 @@
 #include <cstdio>
 
 extern "C" {
-    #include "../to_be_testedC.h"
+    #include "to_be_testedC.h"
 }
 
 // For stdin testing system("stdinSim.sh");
