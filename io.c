@@ -3,7 +3,7 @@
 #include <string.h>
 #include "htab.h"
 
-int read_word(const char *s, int max, FILE *f)
+int read_word(char *s, int max, FILE *f)
 {
     int length = 0;
     int character = 0;
@@ -20,16 +20,18 @@ int read_word(const char *s, int max, FILE *f)
                 break;
         }
 
+        // TODO
         if (length > 1 && character != EOF)
         {
-            temp_word[length+1] = '\0';
-            if ((s = realloc(temp_word, (length+1) * sizeof(char))) == NULL)
+            if ((s = malloc((length+1) * sizeof(char))) == NULL)
             {
                 free(temp_word);
                 return EOF;
             }
-            // TODO
+            temp_word[length+1] = '\0';
             strcpy(s, temp_word);
+            free(temp_word);
+            printf("%s", s);
             return length;
         }
     }

@@ -3,11 +3,10 @@
 
 int main(void)
 {
-    char *word = NULL;
-    FILE *f;
-    f = fopen("tests/test.txt","r");
-    printf("%d", read_word(word, MAX_WORD, f));
-    printf("%s", word);
-
+    char *s = NULL;
+    FILE *f = fopen("tests/test.txt", "r");
+    int i = read_word(s, 127, f);
+    printf("%d", i);
+    printf("%s", s);
 	return 0;
 }
