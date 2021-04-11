@@ -3,37 +3,29 @@
 #include <string.h>
 #include "htab.h"
 
-int read_word(char *s, int max, FILE *f)
+int read_word(word_t *word, int max, FILE *f)
 {
-    int length = 0;
+    word->length = 0;
     int character = 0;
-    char *temp_word = NULL;
 
-    if ((temp_word = malloc(max * sizeof(char))) != NULL)
+    if ((word->s = malloc(max * sizeof(char))) != NULL)
     {
-        for (; length < max-1; length++)
+        for (; word->length < max-1; word->length++)
         {
             character = fgetc(f);
             if (character != ' ' && character != EOF)
-                temp_word[length] = character;
-            else
+                word->s[word->length] = character;
+            else if (!strcmp(word->s, ""))
+            {
+                free(word->s);
+                return EOF;
+            } else
                 break;
         }
 
         // TODO
-        if (length > 1 && character != EOF)
-        {
-            if ((s = malloc((length+1) * sizeof(char))) == NULL)
-            {
-                free(temp_word);
-                return EOF;
-            }
-            temp_word[length+1] = '\0';
-            strcpy(s, temp_word);
-            free(temp_word);
-            printf("%s", s);
-            return length;
-        }
+        word->s[word->length+1] = '\0';
+        return word->length;
     }
     return EOF;
 }
