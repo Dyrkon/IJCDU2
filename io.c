@@ -1,31 +1,32 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "htab.h"
+#include "io.h"
 
-int read_word(word_t *word, int max, FILE *f)
+void clear(char *s)
 {
-    word->length = 0;
+    for(int i = 0; i < MAX_WORD; ++i)
+        s[i] = 0;
+}
+
+// TODO(Varovani)
+int read_word(char *s, int max, FILE *f)
+{
+    int length = 0;
     int character = 0;
-
-    if ((word->s = malloc(max * sizeof(char))) != NULL)
+    clear(s);
+    for (; length < max-1; length++)
     {
-        for (; word->length < max-1; word->length++)
+        character = fgetc(f);
+        if (character == EOF && length == 0)
+            return -1;
+        if (character != ' ' && character != EOF)
         {
-            character = fgetc(f);
-            if (character != ' ' && character != EOF)
-                word->s[word->length] = character;
-            else if (!strcmp(word->s, ""))
-            {
-                free(word->s);
-                return EOF;
-            } else
-                break;
+            s[length] = (char)character;
         }
-
-        // TODO
-        word->s[word->length+1] = '\0';
-        return word->length;
+        else
+        {
+            s[length+1] = '\0';
+            return length;
+        }
     }
+
     return EOF;
 }

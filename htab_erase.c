@@ -11,7 +11,9 @@ void free_on_key(heshEntry_t *entry)
     }
     else
     {
+        printf("in loop key: %s, pair: %d\n", entry->pair.key, entry->pair.value);
         free_on_key(entry->next);
+        printf("out loop key: %s, pair: %d\n", entry->pair.key, entry->pair.value);
         free(entry->pair.key);
         free(entry);
     }

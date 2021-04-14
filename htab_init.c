@@ -9,7 +9,7 @@ htab_t *htab_init(size_t n)
     size_to_alloc += sizeof(htab_t);
     size_to_alloc += sizeof(heshEntry_t*) * n;
 
-    if ((tab = malloc(size_to_alloc)) == NULL)
+    if ((tab = (htab_t *)malloc(size_to_alloc)) == NULL)
         return NULL;
 
     tab->arr_size = n;

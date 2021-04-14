@@ -4,43 +4,54 @@
 htab_pair_t * htab_lookup_add(htab_t * t, htab_key_t key)
 {
     size_t hash = (htab_hash_function(key) % t->arr_size);
-    if (hash != 0)
-        printf("%zu", hash);
-    int val = 0;
     heshEntry_t *suspect = t->entries[hash];
-    printf("%d", t->size);
-    printf("%d", t->arr_size);
+    bool first_time = true;
 
     if (suspect != NULL)
     {
-        for (;suspect->next != NULL; suspect = t->entries[hash]->next)
+        for (;suspect != NULL || first_time; suspect = suspect->next)
         {
             if (!strcmp(suspect->pair.key,key))
+            {
+                suspect->pair.value++;
                 return &suspect->pair;
-            val++;
+            }
+            else if (suspect->next == NULL)
+            {
+                if ((suspect->next = malloc(sizeof(heshEntry_t))) != NULL)
+                {
+                    suspect->next->next = NULL;
+                    if ((suspect->next->pair.key = malloc(strlen(key))) != NULL)
+                        strcpy(suspect->next->pair.key, key);
+                    else {
+                        free(suspect);
+                        return NULL;
+                    }
+                    suspect->next->pair.value = suspect->pair.value + 1;
+                    t->size++;
+                    return &suspect->next->pair;
+                }
+                break;
+            }
+            first_time = false;
         }
     }
     else
     {
-        if ((suspect = malloc(sizeof(heshEntry_t))) != NULL)
+        if ((suspect = (heshEntry_t *)malloc(sizeof(heshEntry_t))) != NULL)
         {
-            if ((suspect->pair.key = malloc(strlen(key))) != NULL)
+            if ((suspect->pair.key = malloc(strlen(key)+1)) != NULL)
                 strcpy(suspect->pair.key, key);
-            suspect->pair.value = val;
+            else {
+                free(suspect);
+                return NULL;
+            }
+            suspect->pair.value = 1;
+            suspect->next = NULL;
+            t->entries[hash] = suspect;
+            t->size++;
             return &suspect->pair;
         }
-        else
-            return NULL;
-    }
-
-
-    if ((suspect->next = malloc(sizeof(heshEntry_t))) != NULL)
-    {
-        suspect->next->next = NULL;
-        if ((suspect->next->pair.key = malloc(strlen(key))) != NULL)
-            strcpy(suspect->next->pair.key, key);
-        suspect->pair.value = val;
-        return &suspect->pair;
     }
     return NULL;
 }
