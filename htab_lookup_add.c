@@ -14,6 +14,8 @@ htab_pair_t * htab_lookup_add(htab_t * t, htab_key_t key)
             if (!strcmp(suspect->pair.key,key))
             {
                 suspect->pair.value++;
+                // TODO(pricitat tu size tady nebo ne?)
+                t->size++;
                 return &suspect->pair;
             }
             else if (suspect->next == NULL)
@@ -21,7 +23,7 @@ htab_pair_t * htab_lookup_add(htab_t * t, htab_key_t key)
                 if ((suspect->next = malloc(sizeof(heshEntry_t))) != NULL)
                 {
                     suspect->next->next = NULL;
-                    if ((suspect->next->pair.key = malloc(strlen(key))) != NULL)
+                    if ((suspect->next->pair.key = malloc(strlen(key)+2)) != NULL)
                         strcpy(suspect->next->pair.key, key);
                     else {
                         free(suspect);

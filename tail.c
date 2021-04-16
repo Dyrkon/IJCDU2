@@ -15,7 +15,6 @@
 #define MINIMAL_N_OF_LINES 5
 #define ABS(x) ((x < 0) ? (x *= -1) : x)
 
-
 int main(int argc, char *argv[])
 {
     if (start_tail(argc, argv))

@@ -40,3 +40,4 @@ cmake-build-debug/
 tests/test.txt
 libhtab.a
 libhtab.so
+tests/book.txt

@@ -13,25 +13,29 @@ enable_testing()
 
 add_subdirectory(googletest)
 
-set(Headers
-        to_be_testedC.h
-        to_be_tested_Cplus.h)
+set(Headers1
+        tests/to_be_testedC.h)
+
+set(Headers2
+        htab.h)
+
 set(Sources1
         tail.c
         )
 
-set(Sources2
-        wordcountPlus.cc
-        )
+#set(Sources2
+#        wordcountPlus.cc
+#        )
 
 set(Sources3
         wordcount.c
-        io.c)
+        io.c
+        libhtab.so)
 
-add_library(${This}Tail STATIC ${Sources1} ${Headers})
+add_library(${This}Tail STATIC ${Sources1} ${Headers1})
 
-add_library(${This}wcPlus STATIC ${Sources2} ${Headers})
+#add_library(${This}wcPlus STATIC ${Sources2} ${Headers})
 
-add_library(${This}wcC STATIC ${Sources3} ${Headers})
+add_library(${This}wcC STATIC ${Sources3} ${Headers2})
 
 add_subdirectory(tests)

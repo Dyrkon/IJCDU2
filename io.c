@@ -6,7 +6,7 @@ void clear(char *s)
         s[i] = 0;
 }
 
-// TODO(Varovani)
+// TODO(Varovani muze byt jen jedno????)
 int read_word(char *s, int max, FILE *f)
 {
     int length = 0;
@@ -17,16 +17,20 @@ int read_word(char *s, int max, FILE *f)
         character = fgetc(f);
         if (character == EOF && length == 0)
             return -1;
-        if (character != ' ' && character != EOF)
+        if (!isspace(character) && character != EOF)
         {
             s[length] = (char)character;
         }
         else
         {
             s[length+1] = '\0';
-            return length;
         }
     }
+    if (!isspace(character) || character != EOF)
+    {
+        fprintf(stderr, "Slovo bylo načteno jen z části");
+        return -1;
+    }
 
-    return EOF;
+    return length;
 }

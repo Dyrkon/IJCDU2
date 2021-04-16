@@ -3,23 +3,21 @@
 
 htab_t *htab_move(size_t n, htab_t *from)
 {
-    size_t size_to_alloc = 0;
-    htab_t *tab;
+    htab_t *new_tab;
+    new_tab = htab_init(n);
+    size_t hash = 0;
 
-    size_to_alloc += sizeof(htab_t);
-    size_to_alloc += sizeof(heshEntry_t*) * n;
-
-    if ((tab = malloc(size_to_alloc)) == NULL)
-        return NULL;
-
-    tab->arr_size = n;
-    tab->size = 0;
-
+    // TODO(There will be problem if the table is smaller. Need to rehash)
     for (size_t i = 0; i < from->arr_size; ++i)
     {
-        tab->entries[i] = from->entries[i];
-        from->entries[i] = NULL;
+        if (from->entries[i] != NULL)
+        {
+            hash = (htab_hash_function(from->entries[i]->pair.key) % n);
+            new_tab->entries[hash] = from->entries[i];
+            from->entries[i] = NULL;
+        }
     }
+    new_tab->size = from->size;
 
-    return tab;
+    return new_tab;
 }
