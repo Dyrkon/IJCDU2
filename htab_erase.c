@@ -7,7 +7,6 @@ bool htab_erase(htab_t * t, htab_key_t key)
     size_t hash = (htab_hash_function(key) % t->arr_size);
     heshEntry_t *suspect = t->entries[hash];
     heshEntry_t *next = NULL;
-    // TODO(t->size )
     if (suspect != NULL)
     {
         while(true)
@@ -16,26 +15,23 @@ bool htab_erase(htab_t * t, htab_key_t key)
             {
                 if (!strcmp(suspect->pair.key,key))
                 {
-                    t->size -= suspect->pair.value;
+                    t->size--;
                     free(suspect->pair.key);
                     free(suspect);
                     t->entries[hash] = NULL;
                     break;
                 }
-                else
-                    break;
             }
             else
             {
                 if (!strcmp(suspect->pair.key,key))
                 {
-                    t->size -= suspect->pair.value;
+                    t->size--;
                     next = suspect->next;
                     free(suspect->pair.key);
                     free(suspect);
-                    suspect = next;}
-                else
-                    break;
+                    suspect = next;
+                }
             }
         }
         return true;

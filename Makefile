@@ -4,14 +4,14 @@
 #	Makefile pro překlad a spuštění druhého úkolu IJC
 
 
-CFLAGS  	= -g -std=c11 -Wextra -Wall -pedantic -O2 -march=native -flto
+CFLAGS  	= -g -std=c99 -Wextra -Wall -pedantic -O2 -march=native -flto
 DEBUGFLAGS	= -Og -g -rdynamic -std=c11 -Wextra -Wall -pedantic
 LDLIBS  	= -lm # pokud potřebujeme matematickou knihovnu libm
 LIBGLAGS	= -shared -fPIC
 OBJ			= htab_hash_function.o htab_init.o htab_move.o htab_size.o htab_bucket_count.o htab_find.o htab_lookup_add.o htab_erase.o htab_for_each.o htab_clear.o htab_free.o
 CC 			= gcc
 
-all: tail dynamic-lib static-lib wordcount wordcount-dynamic
+all: tail dynamic-lib static-lib wordcount wordcount-dynamic wordcount-orig
 
 # Tail
 
@@ -25,7 +25,7 @@ io.o: io.c io.h
 
 # TODO(remove debug flags)
 wordcount.o: wordcount.c io.o
-	$(CC) $(DEBUGFLAGS) -c wordcount.c io.o
+	$(CC) $(CFLAGS) $(DEBUGFLAGS) -c wordcount.c io.o
 
 # Lib files
 
@@ -52,6 +52,9 @@ htab_clear.o: htab_clear.c htab_priv.h
 
 htab_free.o: htab_free.c htab_priv.h
 
+wordcount-orig: wordcount-orig.cpp
+	g++ -std=c++11 -O2 wordcount-orig.cpp -o wordcount-orig
+
 dynamic-lib: $(OBJ)
 	$(CC) $(LIBGLAGS) -o libhtab.so $(OBJ)
 
@@ -72,7 +75,3 @@ clean:
 
 archiv:
 	tar czvf xmudra04.zip *.c *.h *.so *.a Makefile
-
-run: tail wordcount
-	./tail
-	./wordcount

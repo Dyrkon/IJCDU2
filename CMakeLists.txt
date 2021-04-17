@@ -1,41 +1,50 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.8)
+project(ijc_tests)
 
-set(This IJCDU2)
+include(GoogleTest.cmake)
 
-project(${This} C CXX)
-
-set(CMAKE_C_STANDARD 99)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-#target_compile_options(${This} -Wall -Werror)
-
+# Test targets
 enable_testing()
 
-add_subdirectory(googletest)
+add_executable(htab_test
+        htab_tests.cpp
 
-set(Headers1
-        tests/to_be_testedC.h)
+        # list your htab .c files here
+        #htab-header.h
+        htab.h
+        htab_priv.h
+        htab_bucket_count.c
+        htab_find.c
+        htab_for_each.c
+        htab_hash_function.c
+        htab_init.c
+        htab_lookup_add.c
+        htab_size.c
+        htab_clear.c htab_erase.c htab_free.c htab_move.c)
 
-set(Headers2
-        htab.h)
+add_executable(tekno_test
+        htab_test.cpp
 
-set(Sources1
-        tail.c
-        )
-
-#set(Sources2
-#        wordcountPlus.cc
-#        )
-
-set(Sources3
+        # list your htab .c files here
+        #htab-header.h
+        htab_priv.h
+        htab.h
+        htab_bucket_count.c
+        htab_find.c
+        htab_for_each.c
+        htab_hash_function.c
+        htab_init.c
+        htab_lookup_add.c
+        htab_size.c
+        htab_clear.c htab_erase.c htab_free.c htab_move.c)
+add_executable(wordcount
+        io.h
+        htab.h
         wordcount.c
         io.c
-        libhtab.so)
+        libhtab.a)
 
-add_library(${This}Tail STATIC ${Sources1} ${Headers1})
-
-#add_library(${This}wcPlus STATIC ${Sources2} ${Headers})
-
-add_library(${This}wcC STATIC ${Sources3} ${Headers2})
-
-add_subdirectory(tests)
+target_link_libraries(htab_test gtest_main)
+target_link_libraries(tekno_test gtest_main)
+GTEST_ADD_TESTS(htab_test "" htab_tests.cpp)
+GTEST_ADD_TESTS(tekno_test "" htab_test.cpp)

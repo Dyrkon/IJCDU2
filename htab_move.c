@@ -7,7 +7,6 @@ htab_t *htab_move(size_t n, htab_t *from)
     new_tab = htab_init(n);
     size_t hash = 0;
 
-    // TODO(There will be problem if the table is smaller. Need to rehash)
     for (size_t i = 0; i < from->arr_size; ++i)
     {
         if (from->entries[i] != NULL)
@@ -18,6 +17,7 @@ htab_t *htab_move(size_t n, htab_t *from)
         }
     }
     new_tab->size = from->size;
+    from->size = 0;
 
     return new_tab;
 }

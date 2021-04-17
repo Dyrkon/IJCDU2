@@ -29,5 +29,4 @@ void usage();
 
 // Word count model in C++
 
-
 #endif //IJCDU2_TO_BE_TESTEDC_H

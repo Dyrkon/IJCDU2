@@ -4,7 +4,6 @@
 void htab_for_each(const htab_t * t, void (*f)(htab_pair_t *data))
 {
     heshEntry_t *entry = NULL;
-    heshEntry_t *next = NULL;
 
     for (size_t i = 0; i < t->arr_size; ++i)
     {
@@ -20,7 +19,7 @@ void htab_for_each(const htab_t * t, void (*f)(htab_pair_t *data))
                 else
                 {
                     (*f)(&entry->pair);
-                    entry = next;
+                    entry = entry->next;
                 }
             }
         }

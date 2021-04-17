@@ -24,9 +24,10 @@ int read_word(char *s, int max, FILE *f)
         else
         {
             s[length+1] = '\0';
+            break;
         }
     }
-    if (!isspace(character) || character != EOF)
+    if (isalpha(character))
     {
         fprintf(stderr, "Slovo bylo načteno jen z části");
         return -1;
