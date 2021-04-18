@@ -24,11 +24,7 @@ htab_pair_t * htab_lookup_add(htab_t * t, htab_key_t key)
                 return &suspect->pair;
             }
             else if (suspect->next == NULL)
-            {/*
-                if (t->arr_size > (t->size*75)/100)
-                {
-                    t = expand_table(t);
-                }*/
+            {
                 if ((suspect->next = malloc(sizeof(heshEntry_t))) != NULL)
                 {
                     suspect->next->next = NULL;
@@ -50,11 +46,7 @@ htab_pair_t * htab_lookup_add(htab_t * t, htab_key_t key)
     else
     {
         if ((suspect = (heshEntry_t *)malloc(sizeof(heshEntry_t))) != NULL)
-        {/*
-            if (t->arr_size > (t->size*75)/100)
-            {
-                t = expand_table(t);
-            }*/
+        {
             if ((suspect->pair.key = malloc(strlen(key)+1)) != NULL)
                 strcpy(suspect->pair.key, key);
             else {

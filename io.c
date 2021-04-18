@@ -6,7 +6,6 @@ void clear(char *s, int max)
         s[i] = 0;
 }
 
-// TODO(Varovani muze byt jen jedno????)
 int read_word(char *s, int max, FILE *f)
 {
     int length = 0;
@@ -17,22 +16,24 @@ int read_word(char *s, int max, FILE *f)
         character = fgetc(f);
         if (character == EOF && length == 0)
             return -1;
-        if (isalpha(character) && character > 32)
+        if (character > 32 && !isspace(character))
         {
             s[length] = (char)character;
             length++;
         }
-        else if (strlen(s) != 0)
+        else if (isspace(character))
         {
             s[length+1] = '\0';
             break;
         }
     }
 
-    if (isalpha(character))
+    if (!isspace(character))
     {
-        while (!isspace((character = fgetc(f)))) {
-            if (character == EOF) break;
+        while (true) {
+            character = fgetc(f);
+            if (character == EOF || isspace(character))
+                break;
         }
         s[max] = -1;
         return length;

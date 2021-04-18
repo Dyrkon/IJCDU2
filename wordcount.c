@@ -11,7 +11,7 @@ int main(void)
 {
     char word[MAX_WORD+1];
     // TODO(velikost tabulky)
-    htab_t *tab = htab_init(10000);
+    htab_t *tab = htab_init(1000000);
     htab_pair_t *pair = NULL;
     bool varned = false;
     int i = 0;
