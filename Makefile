@@ -6,7 +6,6 @@
 
 CFLAGS  	= -g -std=c99 -Wextra -Wall -pedantic -O2 -march=native -flto
 DEBUGFLAGS	= -Og -g -rdynamic -std=c11 -Wextra -Wall -pedantic
-LDLIBS  	= -lm # pokud potřebujeme matematickou knihovnu libm
 LIBGLAGS	= -shared -fPIC
 OBJ			= htab_hash_function.o htab_init.o htab_move.o htab_size.o htab_bucket_count.o htab_find.o htab_lookup_add.o htab_erase.o htab_for_each.o htab_clear.o htab_free.o
 CC 			= gcc
@@ -24,13 +23,13 @@ io.o: io.c io.h
 	$(CC) $(DEBUGFLAGS) -c io.c
 
 # TODO(remove debug flags)
-wordcount.o: wordcount.c io.o
-	$(CC) $(CFLAGS) $(DEBUGFLAGS) -c wordcount.c io.o
+wordcount.o: io.o wordcount.c
+	$(CC) $(DEBUGFLAGS) -c wordcount.c io.o
 
 # Lib files
 
 htab_hash_function.o: htab_hash_function.c
-	$(CC) $(DEBUGFLAGS) -fPIC -c htab_hash_function.c
+	$(CC) $(CFLAGS) -fPIC -c htab_hash_function.c
 
 htab_init.o: htab_init.c htab_priv.h
 
@@ -61,17 +60,17 @@ dynamic-lib: $(OBJ)
 static-lib:
 	ar -rs libhtab.a $(OBJ)
 
-wordcount: wordcount.o io.o htab.h
+wordcount: io.o wordcount.o htab.h
 	$(CC) $(DEBUGFLAGS) -o wordcount wordcount.o libhtab.a io.o
 
-wordcount-dynamic: wordcount.o io.o htab.h
+wordcount-dynamic: io.o wordcount.o htab.h
 	$(CC) $(DEBUGFLAGS) -o wordcount-dynamic wordcount.o io.o /home/dyrkon/code/C/IJC/IJCDU2/libhtab.so
 
 tail: tail.o
-	$(CC) $(CFLAGS) -o tail tail.o $(LDLIBS)
+	$(CC) $(CFLAGS) -o tail tail.o
 
 clean:
 	rm -f  *~  *.bak  *.o  tail libhtab.so libhtab.a wordcount wordcount-dynamic
 
 archiv:
-	tar czvf xmudra04.zip *.c *.h *.so *.a Makefile
+	zip xmudra04.zip *.c *.h *.so *.a Makefile

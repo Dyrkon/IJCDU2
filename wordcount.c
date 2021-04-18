@@ -4,19 +4,27 @@
 
 void print_pair(htab_pair_t *pair)
 {
-    printf("%-7s %d\n", pair->key, pair->value);
+    printf("%s\t%d\n", pair->key, pair->value);
 }
 
 int main(void)
 {
-    char word[MAX_WORD];
-    FILE *f = fopen("tests/test.txt", "r");
+    char word[MAX_WORD+1];
     // TODO(velikost tabulky)
-    htab_t *tab = htab_init(4);
+    htab_t *tab = htab_init(10000);
     htab_pair_t *pair = NULL;
+    bool varned = false;
     int i = 0;
-    while ((i = read_word(word, 127, f)) != EOF)
+    while ((i = read_word(word, 127, stdin)) != EOF)
     {
+        if (word[MAX_WORD] == EOF)
+        {
+            if (!varned)
+                fprintf(stderr, "Slovo bylo načteno jen z části\n");
+            varned = true;
+            word[MAX_WORD] = '\0';
+        }
+
         pair = htab_lookup_add(tab, word);
         pair->value++;
     }
@@ -25,7 +33,6 @@ int main(void)
 
     htab_for_each(tab,(F));
 
-    fclose(f);
     htab_free(tab);
 
 	return 0;

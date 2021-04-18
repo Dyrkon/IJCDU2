@@ -22,20 +22,7 @@ typedef int htab_value_t;               // typ hodnoty
 typedef struct htab_pair {
     htab_key_t    key;          // klíč
     htab_value_t  value;        // asociovaná hodnota
-} htab_pair_t;                  // typedef podle zadání
-
-// Položka tabulky
-typedef struct heshEntry
-{
-    struct htab_pair pair;
-    struct heshEntry *next;
-}heshEntry_t;
-
-typedef struct word
-{
-    char *s;
-    int length;
-}word_t;
+} htab_pair_t;
 
 // Rozptylovací (hash) funkce (stejná pro všechny tabulky v programu)
 // Pokud si v programu definujete stejnou funkci, použije se ta vaše.
