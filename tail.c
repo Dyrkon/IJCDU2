@@ -98,7 +98,7 @@ int do_tail(char *filename, char *to_print, bool is_file)
         return 1;
     }
 
-    for (long i = input.line_number - lines_to_print-1; i < input.line_number; i++) {
+    for (long i = input.line_number - lines_to_print; i < input.line_number; i++) {
         printf("%s\n", input.lines[i]);
     }
 
@@ -222,6 +222,7 @@ input_t get_input(char *filename, bool is_file)
     input_t  input;
     input.line_number = 0;
     input.lines_allocated = 0;
+    input.error_occurred = false;
 
     if (is_file)
     {

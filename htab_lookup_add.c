@@ -1,7 +1,6 @@
 #include "htab.h"
 #include "htab_priv.h"
 
-// TODO
 htab_t *expand_table(htab_t *tab)
 {
     htab_t *new = htab_move(tab->arr_size*2, tab);
