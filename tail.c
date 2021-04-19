@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include "tests/to_be_testedC.h"
+#include "tail.h"
 
 #define MAX_LINES 511
 #define MINIMAL_N_OF_LINES 5
@@ -18,7 +18,7 @@
 int main(int argc, char *argv[])
 {
     if (start_tail(argc, argv))
-        return -1;
+        return 1;
     else
         return 0;
 }
@@ -67,7 +67,7 @@ int start_tail(int argc, char *argv[])
         printf("Too few parameters supplied!\n");
         usage();
     }
-    return 1;
+    return 0;
 }
 
 int do_tail(char *filename, char *to_print, bool is_file)
@@ -98,8 +98,9 @@ int do_tail(char *filename, char *to_print, bool is_file)
         return 1;
     }
 
-    for (long i = input.line_number - lines_to_print; i < input.line_number; i++)
+    for (long i = input.line_number - lines_to_print-1; i < input.line_number; i++) {
         printf("%s\n", input.lines[i]);
+    }
 
     free_all(&input);
     return 0;
@@ -123,13 +124,15 @@ int alloc_lines(bool do_realloc, input_t *input, size_t n)
     }
     else
     {
-        if ((input->lines = malloc(n * sizeof(char *))) == NULL)
+        if ((input->lines = calloc(n, sizeof(char *))) == NULL)
         {
             fprintf(stderr, "Unable to allocate enough memory!\n");
             return 1;
         }
         else
+        {
             input->lines_allocated = MINIMAL_N_OF_LINES;
+        }
     }
     return 0;
 }
@@ -153,7 +156,7 @@ int read_from_file(input_t *input, FILE *fp)
         else
         {
             int end_char;
-            if ((input->lines[input->line_number] = malloc(MAX_LINES+1 * sizeof(char))) == NULL) {
+            if ((input->lines[input->line_number] = calloc(MAX_LINES+1, sizeof(char))) == NULL) {
                 fprintf(stderr, "Unable to allocate enough memory!\n");
                 return 1;
             }
@@ -167,7 +170,7 @@ int read_from_file(input_t *input, FILE *fp)
             {
                 fscanf(fp, "%*[^\n]");
                 end_char = fgetc(fp);
-                fprintf(stderr, "Unable to read the full line.\n");
+                input->error_occurred = true;
             }
         }
     }
@@ -207,7 +210,7 @@ int read_from_stdin(input_t *input)
             {
                 fscanf(stdin, "%*[^\n]");
                 end_char = fgetc(stdin);
-                fprintf(stderr, "Unable to read the full line.\n");
+                input->error_occurred = true;
             }
         }
     }
@@ -237,9 +240,7 @@ input_t get_input(char *filename, bool is_file)
             input.lines_allocated *= -1;
             return input;
         }
-
         fclose(fp);
-        return input;
     }
     else
     {
@@ -250,6 +251,10 @@ input_t get_input(char *filename, bool is_file)
             return input;
         }
     }
+
+    if (input.error_occurred)
+        fprintf(stderr, "Unable to read whole line!\n");
+
     return input;
 }
 
@@ -265,7 +270,7 @@ void free_all(input_t *input)
     }
     else
     {
-        for (long i = 0; i < input->lines_allocated; i++)
+        for (long i = 0; i < input->line_number; i++)
         {
             free(input->lines[i]);
         }

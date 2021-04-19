@@ -15,7 +15,7 @@ all: tail dynamic-lib static-lib wordcount wordcount-dynamic # wordcount-orig
 
 # Tail
 
-tail.o: tail.c
+tail.o: tail.c tail.h
 	$(CC) $(CFLAGS) -c tail.c
 
 # Wordcount
