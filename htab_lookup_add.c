@@ -19,7 +19,7 @@ htab_pair_t * htab_lookup_add(htab_t * t, htab_key_t key)
     {
         for (;suspect != NULL || first_time; suspect = suspect->next)
         {
-            if (!strcmp(suspect->pair.key,key))
+            if (!strcmp((char *)suspect->pair.key,key))
             {
                 return &suspect->pair;
             }
@@ -29,7 +29,7 @@ htab_pair_t * htab_lookup_add(htab_t * t, htab_key_t key)
                 {
                     suspect->next->next = NULL;
                     if ((suspect->next->pair.key = malloc(strlen(key)+1)) != NULL)
-                        strcpy(suspect->next->pair.key, key);
+                        strcpy((char *)suspect->next->pair.key, key);
                     else {
                         free(suspect);
                         return NULL;
@@ -48,7 +48,7 @@ htab_pair_t * htab_lookup_add(htab_t * t, htab_key_t key)
         if ((suspect = (heshEntry_t *)malloc(sizeof(heshEntry_t))) != NULL)
         {
             if ((suspect->pair.key = malloc(strlen(key)+1)) != NULL)
-                strcpy(suspect->pair.key, key);
+                strcpy((char *)suspect->pair.key, key);
             else {
                 free(suspect);
                 return NULL;

@@ -15,7 +15,7 @@ void htab_clear(htab_t * t)
             {
                 if (to_clear->next == NULL)
                 {
-                    free(to_clear->pair.key);
+                    free((char *)to_clear->pair.key);
                     free(to_clear);
                     t->entries[i] = NULL;
                     break;
@@ -23,7 +23,7 @@ void htab_clear(htab_t * t)
                 else
                 {
                     next = to_clear->next;
-                    free(to_clear->pair.key);
+                    free((char *)to_clear->pair.key);
                     free(to_clear);
                     to_clear = next;
                 }

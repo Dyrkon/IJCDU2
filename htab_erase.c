@@ -16,7 +16,7 @@ bool htab_erase(htab_t * t, htab_key_t key)
                 if (!strcmp(suspect->pair.key,key))
                 {
                     t->size--;
-                    free(suspect->pair.key);
+                    free((char *)suspect->pair.key);
                     free(suspect);
                     t->entries[hash] = NULL;
                     break;
@@ -28,7 +28,7 @@ bool htab_erase(htab_t * t, htab_key_t key)
                 {
                     t->size--;
                     next = suspect->next;
-                    free(suspect->pair.key);
+                    free((char *)suspect->pair.key);
                     free(suspect);
                     suspect = next;
                 }
