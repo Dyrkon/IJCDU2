@@ -87,4 +87,5 @@ clean:
 	rm -f  *~  *.bak  *.o  tail libhtab.so libhtab.a wordcount wordcount-dynamic
 
 pack:
-	zip xmudra04.zip *.c *.h *.so *.a Makefile
+	zip xmudra04.zip *.c *.h Makefile
+	#zip xnovak99.zip *.c *.cc *.h Makefile

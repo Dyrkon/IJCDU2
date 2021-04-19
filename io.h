@@ -1,3 +1,9 @@
+// io.h
+// Řešení IJC-DU2, příklad b), 19.4.2021
+// Autor: Matěj Mudra, FIT
+// Přeloženo: gcc 10.2.0
+// Hlavičkový soubor k io(načítání souborů)
+
 #ifndef IJCDU2_IO_H
 #define IJCDU2_IO_H
 

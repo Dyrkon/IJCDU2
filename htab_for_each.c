@@ -1,3 +1,9 @@
+// htab_for_each.c
+// Řešení IJC-DU2, příklad b), 19.4.2021
+// Autor: Matěj Mudra, FIT
+// Přeloženo: gcc 10.2.0
+// Aplikuje zadanou funkci na všechy položky v hashmapě
+
 #include "htab.h"
 #include "htab_priv.h"
 

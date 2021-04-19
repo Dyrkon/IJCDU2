@@ -1,3 +1,9 @@
+// htab_find.c
+// Řešení IJC-DU2, příklad b), 19.4.2021
+// Autor: Matěj Mudra, FIT
+// Přeloženo: gcc 10.2.0
+// Pokusí se najít položku v hashmapě a vrátí ji, nebo NULL
+
 #include "htab.h"
 #include "htab_priv.h"
 

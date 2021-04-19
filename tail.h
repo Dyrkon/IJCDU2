@@ -1,3 +1,9 @@
+// tail.h
+// Řešení IJC-DU2, příklad a), 19.4.2021
+// Autor: Matěj Mudra, FIT
+// Přeloženo: gcc 10.2.0
+// Hlavička k implementaci tail
+
 #ifndef IJCDU2_TO_BE_TESTEDC_H
 #define IJCDU2_TO_BE_TESTEDC_H
 

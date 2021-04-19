@@ -1,3 +1,9 @@
+// htab_lookup_add.c
+// Řešení IJC-DU2, příklad b), 19.4.2021
+// Autor: Matěj Mudra, FIT
+// Přeloženo: gcc 10.2.0
+// Metoda hashmapy pro načítání/hledání v mapě
+
 #include "htab.h"
 #include "htab_priv.h"
 

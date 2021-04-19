@@ -1,3 +1,9 @@
+// htab_priv.c
+// Řešení IJC-DU2, příklad b), 19.4.2021
+// Autor: Matěj Mudra, FIT
+// Přeloženo: gcc 10.2.0
+// Privátní hlavička se strukturamy hlaviček
+
 #include "htab.h"
 #include <stdio.h>
 #include <stdlib.h>

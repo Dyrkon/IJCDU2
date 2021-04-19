@@ -1,7 +1,12 @@
+// htab_erase.c
+// Řešení IJC-DU2, příklad b), 19.4.2021
+// Autor: Matěj Mudra, FIT
+// Přeloženo: gcc 10.2.0
+// Pokusí se vymazat položku z mapy a při úspěchu vrátí true, jinak false
+
 #include "htab.h"
 #include "htab_priv.h"
 
-// TODO(rework the counts)
 bool htab_erase(htab_t * t, htab_key_t key)
 {
     size_t hash = (htab_hash_function(key) % t->arr_size);

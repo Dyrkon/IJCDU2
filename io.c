@@ -1,3 +1,9 @@
+// io.c
+// Řešení IJC-DU2, příklad b), 19.4.2021
+// Autor: Matěj Mudra, FIT
+// Přeloženo: gcc 10.2.0
+// Metody pro načítání zadaného souboru po slovech
+
 #include "io.h"
 
 void clear(char *s, int max)
