@@ -11,7 +11,7 @@ LIBGLAGS	= -shared -fPIC
 OBJ			= htab_hash_function.o htab_init.o htab_move.o htab_size.o htab_bucket_count.o htab_find.o htab_lookup_add.o htab_erase.o htab_for_each.o htab_clear.o htab_free.o
 CC 			= gcc
 
-all: tail dynamic-lib static-lib wordcount wordcount-dynamic # wordcount-orig
+all: tail dynamic-lib static-lib wordcount wordcount-dynamic wordcount-orig
 
 # Tail
 
@@ -61,8 +61,8 @@ htab_clear.o: htab_clear.c htab_priv.h
 htab_free.o: htab_free.c htab_priv.h
 	$(CC) $(CFLAGS_L) -c htab_free.c
 
-# wordcount-orig: wordcount-orig.cpp
-#	g++ -std=c++11 -O2 wordcount-orig.cpp -o wordcount-orig
+wordcount-orig: wordcount-orig.cpp
+	g++ -std=c++11 -O2 wordcount-orig.cpp -o wordcount-orig
 
 # Lib linking
 
@@ -84,8 +84,7 @@ tail: tail.o
 	$(CC) $(CFLAGS) -o tail tail.o
 
 clean:
-	rm -f  *~  *.bak  *.o  tail libhtab.so libhtab.a wordcount wordcount-dynamic
+	rm -f  *~  *.bak  *.o  tail wordcount wordcount-dynamic wordcount-orig #libhtab.so libhtab.a
 
-pack:
-	zip xmudra04.zip *.c *.h Makefile
-	#zip xnovak99.zip *.c *.cc *.h Makefile
+pack: clean
+	zip xmudra04.zip *.c *.h wordcount-orig.cpp Makefile
