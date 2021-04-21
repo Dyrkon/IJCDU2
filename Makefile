@@ -78,13 +78,13 @@ wordcount: io.o wordcount.o htab.h
 	$(CC) $(CFLAGS) -o wordcount wordcount.o libhtab.a io.o
 
 wordcount-dynamic: io.o wordcount.o htab.h
-	$(CC) $(CFLAGS) -o wordcount-dynamic wordcount.o io.o /home/dyrkon/code/C/IJC/IJCDU2/libhtab.so
+	$(CC) $(CFLAGS) -o wordcount-dynamic wordcount.o io.o -L. libhtab.so
 
 tail: tail.o
 	$(CC) $(CFLAGS) -o tail tail.o
 
 clean:
-	rm -f  *~  *.bak  *.o  tail wordcount wordcount-dynamic wordcount-orig #libhtab.so libhtab.a
+	rm -f  *~  *.bak  *.o  tail wordcount wordcount-dynamic wordcount-orig libhtab.so libhtab.a
 
 pack: clean
 	zip xmudra04.zip *.c *.h wordcount-orig.cpp Makefile
