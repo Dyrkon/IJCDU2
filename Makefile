@@ -8,10 +8,10 @@ CFLAGS  	= -g -std=c99 -Wextra -Wall -pedantic -O2 -march=native -flto
 CFLAGS_L	= -g -std=c99 -Wextra -Wall -pedantic -O2 -march=native -flto -fPIC
 DEBUGFLAGS	= -Og -g -rdynamic -std=c11 -Wextra -Wall -pedantic
 LIBGLAGS	= -shared -fPIC
-OBJ			= htab_hash_function.o htab_init.o htab_move.o htab_size.o htab_bucket_count.o htab_find.o htab_lookup_add.o htab_erase.o htab_for_each.o htab_clear.o htab_free.o
+OBJ			= htab_init.o htab_hash_function.o htab_move.o htab_size.o htab_bucket_count.o htab_find.o htab_lookup_add.o htab_erase.o htab_for_each.o htab_clear.o htab_free.o
 CC 			= gcc
 
-all: tail wordcount wordcount-dynamic wordcount-orig
+all: tail wordcount-dynamic wordcount  wordcount-orig
 
 # Tail
 
@@ -66,22 +66,23 @@ wordcount-orig: wordcount-orig.cpp
 
 # Lib linking
 
+
 libhtab.so: $(OBJ)
 	LD_LIBRARY_PATH="."
-	$(CC) $(LIBGLAGS) -o libhtab.so $(OBJ)
+	$(CC) -shared -fPIC $(OBJ) -o $@
 
 libhtab.a: $(OBJ)
 	LD_LIBRARY_PATH="."
-	ar -rs libhtab.a $(OBJ)
-	ranlib $(OBJ)
+	ar crsv libhtab.a $(OBJ)
+	ranlib $@
 
 # Runnable files
 
-wordcount: io.o wordcount.o htab.h libhtab.a
+wordcount: libhtab.a io.o wordcount.o htab.h
 	LD_LIBRARY_PATH="."
 	$(CC) $(CFLAGS) wordcount.o io.o -L. -lhtab -Wl,-rpath="$(PWD)" -o wordcount
 
-wordcount-dynamic: io.o wordcount.o htab.h libhtab.so
+wordcount-dynamic: libhtab.so io.o wordcount.o htab.h
 	$(CC) $(CFLAGS) wordcount.o io.o -L. -lhtab -Wl,-rpath="$(PWD)" -o wordcount-dynamic
 
 tail: tail.o

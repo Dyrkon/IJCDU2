@@ -4,7 +4,7 @@
 // Přeloženo: gcc 10.2.0
 // Vrací hash zadaného klíče
 
-#include <unistring/stdint.h>
+#include <stdint.h>
 #include "htab.h"
 #include "htab_priv.h"
 
