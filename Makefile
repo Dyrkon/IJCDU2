@@ -11,7 +11,7 @@ LIBGLAGS	= -shared -fPIC
 OBJ			= htab_hash_function.o htab_init.o htab_move.o htab_size.o htab_bucket_count.o htab_find.o htab_lookup_add.o htab_erase.o htab_for_each.o htab_clear.o htab_free.o
 CC 			= gcc
 
-all: tail dynamic-lib static-lib wordcount wordcount-dynamic wordcount-orig
+all: tail wordcount wordcount-dynamic wordcount-orig
 
 # Tail
 
@@ -66,19 +66,23 @@ wordcount-orig: wordcount-orig.cpp
 
 # Lib linking
 
-dynamic-lib: $(OBJ)
+libhtab.so: $(OBJ)
+	LD_LIBRARY_PATH="."
 	$(CC) $(LIBGLAGS) -o libhtab.so $(OBJ)
 
-static-lib:
+libhtab.a: $(OBJ)
+	LD_LIBRARY_PATH="."
 	ar -rs libhtab.a $(OBJ)
+	ranlib $(OBJ)
 
 # Runnable files
 
-wordcount: io.o wordcount.o htab.h
-	$(CC) $(CFLAGS) -o wordcount wordcount.o libhtab.a io.o
+wordcount: io.o wordcount.o htab.h libhtab.a
+	LD_LIBRARY_PATH="."
+	$(CC) $(CFLAGS) wordcount.o io.o -L. -lhtab -Wl,-rpath="$(PWD)" -o wordcount
 
-wordcount-dynamic: io.o wordcount.o htab.h
-	$(CC) $(CFLAGS) -o wordcount-dynamic wordcount.o io.o -L. libhtab.so
+wordcount-dynamic: io.o wordcount.o htab.h libhtab.so
+	$(CC) $(CFLAGS) wordcount.o io.o -L. -lhtab -Wl,-rpath="$(PWD)" -o wordcount-dynamic
 
 tail: tail.o
 	$(CC) $(CFLAGS) -o tail tail.o
