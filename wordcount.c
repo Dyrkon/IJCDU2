@@ -13,7 +13,7 @@
  *  V případech s malým vstupem je C++ program rychlejší o desítky procent, což je ale ve výsledku velice krátký časový úsek.
  *  S daty velikosti knihy z www.gutenberg.org nebo výstupu příkazu "seq 1000000 2000000|shuf" je má C implementace rychlejší
  *  v jak statické, tak dynamické verzi o téměr polovinu. Testováno na "Manjaro 21.0.2 Ornara" s Intel Core i9-9900K
- *  Implementace v C++ je hospodárnější s pamětí, ale u hashmap je místo lepší plýtvat, než ho šetřit a tím program spomalovat.
+ *  Implementace v C++ je hospodárnější s pamětí, ale u hashmap je místo lepší plýtvat, než ho šetřit a tím program zpomalovat.
  */
 #define START 100069
 
